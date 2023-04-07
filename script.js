@@ -3,8 +3,8 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibXV6YW1pbDIwNiIsImEiOiJjbGN5eXh2cW0wc2lnM290Z
 const map = new mapboxgl.Map({
   container: 'map',
   style:  'mapbox://styles/mapbox/streets-v12',
-  center: [-100.486052, 37.830348],
-  zoom: 2
+  center: [9.0820, 8.6753],
+  zoom: 5
 });
 
 let lat
@@ -12,7 +12,7 @@ let log
 /// when user click on somewhere on the map
 
 
- let hoveredStateId = null;
+ 
  
 ////add geojson data
  map.on('load', function()  {
@@ -54,6 +54,7 @@ let log
         'line-width': 1
     }
     });
+    let hoveredStateId = null;
     
     // // When the user moves their mouse over the state-fill layer, we'll update the
     // // feature state for the feature under the mouse.
@@ -112,5 +113,14 @@ map.on('click', 'state-fills', function(e) {
 
 popup.addTo(map)
 });
+
+
+///search menu
+map.addControl(
+  new MapboxGeocoder({
+  accessToken: mapboxgl.accessToken,
+  mapboxgl: mapboxgl
+  })
+  );
 
 
