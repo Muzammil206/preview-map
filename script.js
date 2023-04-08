@@ -2,17 +2,31 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoibXV6YW1pbDIwNiIsImEiOiJjbGN5eXh2cW0wc2lnM290ZzJsZnNlbmxsIn0.o2Obvl7E_nQefSN34XsFmw';
 const map = new mapboxgl.Map({
   container: 'map',
-  style:  'mapbox://styles/mapbox/streets-v12',
+  style:  'mapbox://styles/mapbox/satellite-streets-v12',
   center: [9.0820, 8.6753],
   zoom: 5
 });
+/// changing map style
+const changeMap = function(){
+  const layerList = document.getElementById('menu');
+ const inputs = layerList.getElementsByTagName('input');
+  
+  for (const input of inputs) {
+  input.onclick = (layer) => {
+  const layerId = layer.target.id;
+  map.setStyle('mapbox://styles/mapbox/' + layerId);
+  };
+
+  }
+}
+
 
 let lat
 let log
 /// when user click on somewhere on the map
 
 
- 
+let hoveredStateId = null;
  
 ////add geojson data
  map.on('load', function()  {
@@ -32,7 +46,8 @@ let log
         'source': 'states',
         'layout': {},
         'paint': {
-        'fill-color': '#627BC1',
+        // 'fill-color': '#627BC1',
+        'fill-color': '#FFFFFF',
         'fill-opacity': [
         'case',
         ['boolean', ['feature-state', 'hover'], false],
@@ -51,40 +66,40 @@ let log
         'layout': {},
         'paint': {
         'line-color': '#627BC1',
-        'line-width': 1
+        'line-width': 2
     }
     });
-    let hoveredStateId = null;
+ 
     
-    // // When the user moves their mouse over the state-fill layer, we'll update the
-    // // feature state for the feature under the mouse.
-    // map.on('mousemove', 'state-fills', (e) => {
-    //     if (e.features.length > 0) {
-    //     if (hoveredStateId !== null) {
-    //     map.setFeatureState(
-    //     { source: 'states', id: hoveredStateId },
-    //     { hover: false }
-    //     );
-    //     }
-    //     hoveredStateId = e.features[0].id;
-    //     map.setFeatureState(
-    //     { source: 'states', id: hoveredStateId },
-    //     { hover: true }
-    //     );
-    //     }
-    //     });
+    // When the user moves their mouse over the state-fill layer, we'll update the
+    // feature state for the feature under the mouse.
+//     map.on('mousemove', 'state-fills', (e) => {
+//         if (e.features.length > 0) {
+//         if (hoveredStateId !== null) {
+//         map.setFeatureState(
+//         { source: 'states', id: hoveredStateId },
+//         { hover: false }
+//         );
+//         }
+//         hoveredStateId = e.features[0].id;
+//         map.setFeatureState(
+//         { source: 'states', id: hoveredStateId },
+//         { hover: true }
+//         );
+//         }
+//         });
          
-    // // When the mouse leaves the state-fill layer, update the feature state of the
-    // // previously hovered feature.
-    // map.on('mouseleave', 'state-fills', () => {
-    // if (hoveredStateId !== null) {
-    // map.setFeatureState(
-    // { source: 'states', id: hoveredStateId },
-    // { hover: false }
-    // );
-    // }
-    // hoveredStateId = null;
-    // });
+//     // When the mouse leaves the state-fill layer, update the feature state of the
+//     // previously hovered feature.
+//     map.on('mouseleave', 'state-fills', () => {
+//     if (hoveredStateId !== null) {
+//     map.setFeatureState(
+//     { source: 'states', id: hoveredStateId },
+//     { hover: false }
+//     );
+//     }
+//     hoveredStateId = null;
+//     });
     
 
  })
@@ -100,13 +115,13 @@ map.on('click', 'state-fills', function(e) {
   .setLngLat(e.lngLat)
   .setLngLat(e.lngLat)
     .setHTML(`
-     <div class=" flex font-serif">
-      <h1>properties</h1>
-      <p>id:${feature.properties.uniq_id}</p>
+     <div class=" font-serif">
+      <h1 class=" font-bold text-center">properties</h1>
+      <p class=" capitalize  ">Id:${feature.properties.uniq_id}</p>
       <p>Time-stamp:${feature.properties.timestamp}</p>
       <p>local government:${feature.properties.lganame}</p>
       <p>lgacode:${feature.properties.lgacode}</p>
-      <p>state:${feature.properties.statename}</p>
+      <p>State:${feature.properties.statename}</p>
       <p>Global-id:${feature.properties.globalid}</p>
     </div>`)
   .addTo(map);
@@ -122,5 +137,4 @@ map.addControl(
   mapboxgl: mapboxgl
   })
   );
-
 
