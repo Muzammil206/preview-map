@@ -2,24 +2,24 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoibXV6YW1pbDIwNiIsImEiOiJjbGN5eXh2cW0wc2lnM290ZzJsZnNlbmxsIn0.o2Obvl7E_nQefSN34XsFmw';
 const map = new mapboxgl.Map({
   container: 'map',
-  style:  'mapbox://styles/mapbox/satellite-streets-v12',
+  style:  'mapbox://styles/mapbox/streets-v12',
   center: [9.0820, 8.6753],
   zoom: 5
 });
-/// changing map style
-const changeMap = function(){
-  const layerList = document.getElementById('menu');
- const inputs = layerList.getElementsByTagName('input');
+//changing map style///////
+// const changeMap = function(){
+//   const layerList = document.getElementById('menu');
+//  const inputs = layerList.getElementsByTagName('input');
   
-  for (const input of inputs) {
-  input.onclick = (layer) => {
-  const layerId = layer.target.id;
-  map.setStyle('mapbox://styles/mapbox/' + layerId);
-  };
+//   for (const input of inputs) {
+//   input.onclick = (layer) => {
+//   const layerId = layer.target.id;
+//   map.setStyle('mapbox://styles/mapbox/' + layerId);
+//   };
 
-  }
-}
-
+//   }
+// }
+// changeMap()
 
 let lat
 let log
@@ -107,7 +107,6 @@ let hoveredStateId = null;
  ///when user click  on each of  the local goverment
 
 map.on('click', 'state-fills', function(e) {
-  console.log('ade')
   const features = e.features;
   const feature = features[0];
   const popup = new mapboxgl.Popup(e)
@@ -137,4 +136,9 @@ map.addControl(
   mapboxgl: mapboxgl
   })
   );
+
+  setTimeout(function() {
+    // Once the map is ready, add the "map-loaded" class to the map container
+    document.getElementById("preload").classList.add("hidden");
+}, 4000);
 
